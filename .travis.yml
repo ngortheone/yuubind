@@ -12,16 +12,19 @@ rust:
 
 matrix:
   include:
-    # TODO: (C) reenable coverage hide:https://github.com/xd009642/tarpaulin/issues/101
-    #- rust: stable
-    #  env: TARPAULIN=1
+    - rust: stable
+      env: TARPAULIN=1
     - rust: nightly
       env: CHECK_FORMAT=1
 
 before_script: |
   export PATH="$HOME/.cargo/bin:$PATH"
   if [ -n "$TARPAULIN" ]; then
-    bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
+    cd ..
+    git clone https://github.com/xd009642/tarpaulin
+    cd tarpaulin
+    cargo install --force
+    # bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/develop/travis-install.sh)
   elif [ -n "$CHECK_FORMAT" ]; then
     rustup component add rustfmt-preview --toolchain nightly
   fi
